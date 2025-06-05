@@ -2,6 +2,16 @@ import { ChartColumnBigIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import Link from 'next/link';
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+} from '@clerk/nextjs';
+import { UserDropdown } from '@/components/user-dropdown';
+import { Button } from '@/components/ui/button';
 import './globals.css';
 
 const poppins = Poppins({
@@ -21,16 +31,35 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${poppins.variable} antialiased`}>
-        <nav className="bg-primary p-4 text-white h-20 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold flex gap-1 items-center">
-            <ChartColumnBigIcon className="text-lime-700" /> 42cents
-          </Link>
-          auth button
-        </nav>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${poppins.variable} antialiased`}>
+          <nav className="bg-primary p-4 text-white h-20 flex items-center justify-between">
+            <Link
+              href="/"
+              className="text-2xl font-bold flex gap-1 items-center"
+            >
+              <ChartColumnBigIcon className="text-lime-700" /> 42cents
+            </Link>
+            <SignedOut>
+              <div className="flex items-center">
+                <Button asChild variant="link" className="text-white">
+                  <SignInButton />
+                </Button>
+                <Button asChild variant="link" className="text-white">
+                  <SignUpButton />
+                </Button>
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <Button asChild variant="link" className="text-white">
+                <UserDropdown />
+              </Button>
+            </SignedIn>
+          </nav>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
