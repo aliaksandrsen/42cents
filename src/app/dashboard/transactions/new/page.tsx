@@ -1,3 +1,4 @@
+import { TransactionForm } from '@/components/transaction-form';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -32,7 +33,7 @@ export default function NewTransactionPage() {
           <CardTitle className="text-xl">New Transaction</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>new transaction form</p>
+          <TransactionForm />
         </CardContent>
       </Card>
     </div>
