@@ -32,7 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={`${poppins.variable} antialiased`}>
           <nav className="bg-primary p-4 text-white h-20 flex items-center justify-between">
             <Link
