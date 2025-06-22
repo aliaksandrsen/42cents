@@ -25,7 +25,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { cn } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { Input } from './ui/input';
-// import { type Category } from '@/types/Category';
+import { type Category } from '@/types/Category';
 
 const transactionFormSchema = z.object({
   transactionType: z.enum(['income', 'expense']),
@@ -43,22 +43,22 @@ const transactionFormSchema = z.object({
 type Inputs = z.input<typeof transactionFormSchema>;
 
 type Props = {
-  // categories: Category[];
-  onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
-  defaultValues?: {
-    transactionType: 'income' | 'expense';
-    amount: number;
-    categoryId: number;
-    description: string;
-    transactionDate: Date;
-  };
+  categories: Category[];
+  // onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
+  // defaultValues?: {
+  //   transactionType: 'income' | 'expense';
+  //   amount: number;
+  //   categoryId: number;
+  //   description: string;
+  //   transactionDate: Date;
+  // };
 };
 
 export const TransactionForm = ({
-  // categories,
-  onSubmit,
-  defaultValues,
-}: Props) => {
+  categories,
+}: // onSubmit,
+// defaultValues,
+Props) => {
   const form = useForm({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
@@ -67,22 +67,23 @@ export const TransactionForm = ({
       transactionDate: new Date(),
       amount: 0,
       description: '',
-      ...defaultValues,
+      // ...defaultValues,
     },
   });
 
   const handleSubmit: SubmitHandler<Inputs> = (raw) => {
-    const data = transactionFormSchema.parse(raw);
-    console.log('parsed', data);
+    const data = transactionFormSchema.safeParse(raw);
+
+    console.log('parsed', data.data);
     // data.categoryId - number
     // data.transactionDate - Date
     // data.amount - number
   };
 
-  // const transactionType = form.watch('transactionType');
-  // const filteredCategories = categories.filter(
-  //   (category) => category.type === transactionType
-  // );
+  const transactionType = form.watch('transactionType');
+  const filteredCategories = categories.filter(
+    (category) => category.type === transactionType
+  );
 
   return (
     <Form {...form}>
@@ -133,14 +134,14 @@ export const TransactionForm = ({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {/* {filteredCategories.map((category) => (
+                        {filteredCategories.map((category) => (
                           <SelectItem
                             key={category.id}
                             value={category.id.toString()}
                           >
                             {category.name}
                           </SelectItem>
-                        ))} */}
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
