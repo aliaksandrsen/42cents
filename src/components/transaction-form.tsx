@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addDays, format } from 'date-fns';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import z from 'zod';
 import {
   Form,
@@ -27,7 +27,7 @@ import { CalendarIcon } from 'lucide-react';
 import { Input } from './ui/input';
 import { type Category } from '@/types/Category';
 
-const transactionFormSchema = z.object({
+export const transactionFormSchema = z.object({
   transactionType: z.enum(['income', 'expense']),
   categoryId: z.coerce.number().positive('Please select a category'),
   transactionDate: z.coerce
@@ -40,25 +40,23 @@ const transactionFormSchema = z.object({
     .max(300, 'Description must be at most 300 characters'),
 });
 
-type Inputs = z.input<typeof transactionFormSchema>;
-
 type Props = {
   categories: Category[];
-  // onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
-  // defaultValues?: {
-  //   transactionType: 'income' | 'expense';
-  //   amount: number;
-  //   categoryId: number;
-  //   description: string;
-  //   transactionDate: Date;
-  // };
+  onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
+  defaultValues?: {
+    transactionType: 'income' | 'expense';
+    amount: number;
+    categoryId: number;
+    description: string;
+    transactionDate: Date;
+  };
 };
 
 export const TransactionForm = ({
   categories,
-}: // onSubmit,
-// defaultValues,
-Props) => {
+  onSubmit,
+  defaultValues,
+}: Props) => {
   const form = useForm({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
@@ -67,18 +65,9 @@ Props) => {
       transactionDate: new Date(),
       amount: 0,
       description: '',
-      // ...defaultValues,
+      ...defaultValues,
     },
   });
-
-  const handleSubmit: SubmitHandler<Inputs> = (raw) => {
-    const data = transactionFormSchema.safeParse(raw);
-
-    console.log('parsed', data.data);
-    // data.categoryId - number
-    // data.transactionDate - Date
-    // data.amount - number
-  };
 
   const transactionType = form.watch('transactionType');
   const filteredCategories = categories.filter(
@@ -87,7 +76,7 @@ Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <fieldset className="grid grid-cols-2 gap-y-5 gap-x-2 items-start">
           <FormField
             control={form.control}
