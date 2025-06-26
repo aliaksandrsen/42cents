@@ -4,20 +4,19 @@ import {
   TransactionForm,
   transactionFormSchema,
 } from '@/components/transaction-form';
-// import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { type Category } from '@/types/Category';
 import { format } from 'date-fns';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { createTransaction } from './actions';
 
-export default function NewTransactionForm({
+export const NewTransactionForm = ({
   categories,
 }: {
   categories: Category[];
-}) {
-  const router = useRouter();
-  // const { toast } = useToast();
+}) => {
+  // const router = useRouter();
 
   const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
     const result = await createTransaction({
@@ -28,27 +27,23 @@ export default function NewTransactionForm({
     });
 
     if (result.error) {
-      // toast({
-      //   title: 'Error',
-      //   description: result.message,
-      //   variant: 'destructive',
-      // });
+      toast.error('Error', {
+        description: result.message,
+      });
       return;
     }
 
-    // toast({
-    //   title: 'Success',
-    //   description: 'Transaction created',
-    //   variant: 'success',
-    // });
+    toast.success('Success', {
+      description: 'Transaction created',
+    });
 
-    router.push(
-      `/dashboard/transactions?month=${
-        data.transactionDate.getMonth() + 1
-      }&year=${data.transactionDate.getFullYear()}`
-    );
+    // router.push(
+    //   `/dashboard/transactions?month=${
+    //     data.transactionDate.getMonth() + 1
+    //   }&year=${data.transactionDate.getFullYear()}`
+    // );
 
     console.log(result.id);
   };
   return <TransactionForm onSubmit={handleSubmit} categories={categories} />;
-}
+};

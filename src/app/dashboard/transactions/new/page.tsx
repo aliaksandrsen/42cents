@@ -1,4 +1,3 @@
-import { TransactionForm } from '@/components/transaction-form';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +8,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getCategories } from '@/data/getCategories';
-import NewTransactionForm from './new-transaction-form';
+import { NewTransactionForm } from './new-transaction-form';
 
 export default async function NewTransactionPage() {
   const categories = await getCategories();

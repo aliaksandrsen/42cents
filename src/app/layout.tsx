@@ -1,17 +1,17 @@
-import { ChartColumnBigIcon } from 'lucide-react';
-import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
-import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { UserDropdown } from '@/components/user-dropdown';
 import {
   ClerkProvider,
   SignedIn,
   SignedOut,
   SignInButton,
-  SignOutButton,
   SignUpButton,
 } from '@clerk/nextjs';
-import { UserDropdown } from '@/components/user-dropdown';
-import { Button } from '@/components/ui/button';
+import { ChartColumnBigIcon } from 'lucide-react';
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import Link from 'next/link';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 const poppins = Poppins({
@@ -58,6 +58,7 @@ export default function RootLayout({
             </SignedIn>
           </nav>
           {children}
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

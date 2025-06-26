@@ -40,7 +40,7 @@ export const transactionFormSchema = z.object({
     .max(300, 'Description must be at most 300 characters'),
 });
 
-type Props = {
+type TransactionFormProps = {
   categories: Category[];
   onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
   defaultValues?: {
@@ -56,7 +56,7 @@ export const TransactionForm = ({
   categories,
   onSubmit,
   defaultValues,
-}: Props) => {
+}: TransactionFormProps) => {
   const form = useForm({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
@@ -77,7 +77,10 @@ export const TransactionForm = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <fieldset className="grid grid-cols-2 gap-y-5 gap-x-2 items-start">
+        <fieldset
+          disabled={form.formState.isSubmitting}
+          className="grid grid-cols-2 gap-y-5 gap-x-2 items-start"
+        >
           <FormField
             control={form.control}
             name="transactionType"
