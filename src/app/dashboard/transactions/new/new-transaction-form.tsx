@@ -4,10 +4,10 @@ import {
   TransactionForm,
   transactionFormSchema,
 } from '@/components/transaction-form';
-import { toast } from 'sonner';
 import { type Category } from '@/types/Category';
 import { format } from 'date-fns';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { createTransaction } from './actions';
 
@@ -16,7 +16,7 @@ export const NewTransactionForm = ({
 }: {
   categories: Category[];
 }) => {
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
     const result = await createTransaction({
@@ -37,13 +37,11 @@ export const NewTransactionForm = ({
       description: 'Transaction created',
     });
 
-    // router.push(
-    //   `/dashboard/transactions?month=${
-    //     data.transactionDate.getMonth() + 1
-    //   }&year=${data.transactionDate.getFullYear()}`
-    // );
-
-    console.log(result.id);
+    router.push(
+      `/dashboard/transactions?month=${
+        data.transactionDate.getMonth() + 1
+      }&year=${data.transactionDate.getFullYear()}`
+    );
   };
   return <TransactionForm onSubmit={handleSubmit} categories={categories} />;
 };
