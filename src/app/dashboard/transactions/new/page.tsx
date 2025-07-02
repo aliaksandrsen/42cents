@@ -22,7 +22,9 @@ export default async function NewTransactionPage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/transactions">Transactions</BreadcrumbLink>
+            <BreadcrumbLink href="/dashboard/transactions">
+              Transactions
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
